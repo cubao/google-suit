@@ -40,10 +40,16 @@ build_googletest:
 clean_benchmark:
 	rm -rf $(BENCHMARK_BINARY_DIR)
 install_benchmark: build_benchmark
-	cd $(BENCHMARk_BINARY_DIR) && \
+	rm $(BENCHMARK_SOURCE_DIR)/googletest -f && \
+		ln -s $(GOOGLETEST_SOURCE_DIR) $(BENCHMARK_SOURCE_DIR)/googletest
+	cd $(BENCHMARK_BINARY_DIR) && \
 		make install
+	rm $(BENCHMARK_SOURCE_DIR)/googletest
 build_benchmark: 
+	rm $(BENCHMARK_SOURCE_DIR)/googletest -f && \
+		ln -s $(GOOGLETEST_SOURCE_DIR) $(BENCHMARK_SOURCE_DIR)/googletest
 	mkdir -p $(BENCHMARK_BINARY_DIR) && cd $(BENCHMARK_BINARY_DIR) && \
 		cmake $(BENCHMARK_SOURCE_DIR) \
-			-DCMAKE_INSTALL_PREFIX=$(CMAKE_INSTALL_PREFIX) \
-	&& make -j4
+			-DCMAKE_INSTALL_PREFIX=$(CMAKE_INSTALL_PREFIX) && \
+		make -j4
+	rm $(BENCHMARK_SOURCE_DIR)/googletest
