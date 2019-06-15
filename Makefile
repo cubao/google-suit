@@ -5,6 +5,8 @@ GOOGLETEST_BINARY_DIR := $(abspath dist/googletest)
 GOOGLETEST_SOURCE_DIR := $(abspath googletest)
 GLOG_BINARY_DIR := $(abspath dist/glog)
 GLOG_SOURCE_DIR := $(abspath glog)
+GFLAGS_BINARY_DIR := $(abspath dist/gflags)
+GFLAGS_SOURCE_DIR := $(abspath gflags)
 
 .PHONY: all reset_submodules clean \
 	clean_benchmark \
@@ -16,6 +18,9 @@ GLOG_SOURCE_DIR := $(abspath glog)
 	clean_glog \
 	build_glog \
 	install_glog \
+	clean_gflags \
+	build_gflags \
+	install_gflags \
 
 all:
 	@echo nothing special
@@ -26,9 +31,9 @@ reset_submodules:
 clean:
 	rm -rf build dist
 
-build: build_benchmark build_googletest build_glog
+build: build_benchmark build_googletest build_glog build_gflags
 
-install: install_benchmark install_googletest install_glog
+install: install_benchmark install_googletest install_glog build_gflags
 
 clean_googletest:
 	rm -rf $(GOOGLETEST_BINARY_DIR)
@@ -67,5 +72,16 @@ install_glog: build_glog
 build_glog: 
 	mkdir -p $(GLOG_BINARY_DIR) && cd $(GLOG_BINARY_DIR) && \
 		cmake $(GLOG_SOURCE_DIR) \
+			-DCMAKE_INSTALL_PREFIX=$(CMAKE_INSTALL_PREFIX) && \
+		make -j4
+
+clean_gflags:
+	rm -rf $(GFLAGS_BINARY_DIR)
+install_gflags: build_gflags
+	cd $(GFLAGS_BINARY_DIR) && \
+		make install
+build_gflags: 
+	mkdir -p $(GFLAGS_BINARY_DIR) && cd $(GFLAGS_BINARY_DIR) && \
+		cmake $(GFLAGS_SOURCE_DIR) \
 			-DCMAKE_INSTALL_PREFIX=$(CMAKE_INSTALL_PREFIX) && \
 		make -j4
