@@ -3,6 +3,8 @@ BENCHMARK_BINARY_DIR := $(abspath dist/benchmark)
 BENCHMARK_SOURCE_DIR := $(abspath benchmark)
 GOOGLETEST_BINARY_DIR := $(abspath dist/googletest)
 GOOGLETEST_SOURCE_DIR := $(abspath googletest)
+GLOG_BINARY_DIR := $(abspath dist/glog)
+GLOG_SOURCE_DIR := $(abspath glog)
 
 .PHONY: all reset_submodules clean \
 	clean_benchmark \
@@ -11,6 +13,9 @@ GOOGLETEST_SOURCE_DIR := $(abspath googletest)
 	clean_googletest \
 	build_googletest \
 	install_googletest \
+	clean_glog \
+	build_glog \
+	install_glog \
 
 all:
 	@echo nothing special
@@ -21,9 +26,9 @@ reset_submodules:
 clean:
 	rm -rf build dist
 
-build: build_benchmark build_googletest
+build: build_benchmark build_googletest build_glog
 
-install: install_benchmark install_googletest
+install: install_benchmark install_googletest install_glog
 
 clean_googletest:
 	rm -rf $(GOOGLETEST_BINARY_DIR)
@@ -53,3 +58,14 @@ build_benchmark:
 			-DCMAKE_INSTALL_PREFIX=$(CMAKE_INSTALL_PREFIX) && \
 		make -j4
 	rm $(BENCHMARK_SOURCE_DIR)/googletest
+
+clean_glog:
+	rm -rf $(GLOG_BINARY_DIR)
+install_glog: build_glog
+	cd $(GLOG_BINARY_DIR) && \
+		make install
+build_glog: 
+	mkdir -p $(GLOG_BINARY_DIR) && cd $(GLOG_BINARY_DIR) && \
+		cmake $(GLOG_SOURCE_DIR) \
+			-DCMAKE_INSTALL_PREFIX=$(CMAKE_INSTALL_PREFIX) && \
+		make -j4
