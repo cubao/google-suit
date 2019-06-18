@@ -8,4 +8,4 @@ RUN cd /tmp/code && \
 FROM cubao/basic
 ENV USER=conan
 COPY --from=build /home/$USER/.cmake_install /home/$USER/.cmake_install 
-RUN sudo chown $USER /home/$USER/.cmake_install
+RUN sudo chown $USER -Rf /home/$USER/.cmake_install
