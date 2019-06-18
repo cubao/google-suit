@@ -33,7 +33,7 @@ clean:
 
 build: build_benchmark build_googletest build_glog build_gflags
 
-install: install_benchmark install_googletest install_glog build_gflags
+install: install_benchmark install_googletest install_glog install_gflags
 
 clean_googletest:
 	rm -rf $(GOOGLETEST_BINARY_DIR)
