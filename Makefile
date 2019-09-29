@@ -26,6 +26,7 @@ all:
 	@echo nothing special
 
 reset_submodules:
+	rm -f benchmark/googletest
 	git submodule update --init --recursive
 
 clean:
